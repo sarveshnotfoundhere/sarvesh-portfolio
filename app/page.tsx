@@ -1,14 +1,16 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 
 const roles = ["FINANCE", "STRATEGY", "CREATIVITY"];
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
-  const titleY = useTransform(scrollYProgress, [0, 0.2], [0, -110]);
-  const orbitY = useTransform(scrollYProgress, [0, 0.25], [0, 180]);
-  const orbitRotate = useTransform(scrollYProgress, [0, 0.3], [12, 42]);
+  const titleY = useTransform(scrollYProgress, [0, 0.2], [0, -140]);
+  const orbitY = useTransform(scrollYProgress, [0, 0.3], [0, 220]);
+  const orbitRotate = useTransform(scrollYProgress, [0, 0.35], [12, 48]);
+  const introY = useTransform(scrollYProgress, [0.12, 0.3], [80, -30]);
 
   return (
     <main className="site-shell">
@@ -29,7 +31,7 @@ export default function Home() {
             <a href="#work">WORK</a>
             <a href="#contact">CONTACT</a>
           </div>
-          <a className="nav-cta" href="mailto:sarveshm0718@gmail.com">LET'S TALK ↗</a>
+          <a className="nav-cta" href="mailto:sarveshm0718@gmail.com">LET&apos;S TALK ↗</a>
         </nav>
       </header>
 
@@ -98,37 +100,61 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="section">
-        <p className="hero-kicker">01 · PROFILE</p>
-        <h2 className="section-title">STRUCTURED THINKING. CREATIVE EXECUTION.</h2>
-        <p className="section-subtitle">
-          A portfolio built around finance and commerce, with space for leadership,
-          reporting, design and digital media. More depth is coming in the next build.
-        </p>
+      <section id="about" className="about-section section section-dark">
+        <motion.div className="about-intro" style={{ y: introY }}>
+          <p className="section-kicker">01 · PROFILE</p>
+          <h2 className="section-title">STRUCTURED THINKING.<br />CREATIVE EXECUTION.</h2>
+          <p className="section-subtitle">
+            I am a commerce and finance student building practical experience across
+            reporting, student organisations, visual communication and digital media.
+            I like structured problems, clear communication and work that becomes useful
+            outside the screen.
+          </p>
+        </motion.div>
+
+        <div className="about-grid">
+          <div className="about-card">
+            <span>01</span>
+            <strong>FINANCE</strong>
+            <p>Commerce and finance education with a growing interest in analysis, accounting and business thinking.</p>
+          </div>
+          <div className="about-card">
+            <span>02</span>
+            <strong>COMMUNICATION</strong>
+            <p>Reporting, presentation and audience-facing work developed through student organisations and digital roles.</p>
+          </div>
+          <div className="about-card">
+            <span>03</span>
+            <strong>CREATIVE</strong>
+            <p>Graphic design, digital media and content work that turns ideas into visual experiences.</p>
+          </div>
+        </div>
       </section>
 
-      <section id="experience" className="section">
-        <p className="hero-kicker">02 · EXPERIENCE</p>
-        <h2 className="section-title">THE TIMELINE COMES NEXT.</h2>
-        <p className="section-subtitle">
-          Roles, impact, responsibilities and selected work will become an interactive timeline.
-        </p>
+      <section id="experience" className="section experience-section">
+        <div className="section-heading-row">
+          <div>
+            <p className="section-kicker">02 · EXPERIENCE</p>
+            <h2 className="section-title">WHERE I&apos;VE BEEN<br />PUTTING IT TO WORK.</h2>
+          </div>
+          <p className="section-side-note">2024 → NOW<br />BENGALURU · INDIA</p>
+        </div>
+        <ExperienceTimeline />
       </section>
 
-      <section id="work" className="section">
-        <p className="hero-kicker">03 · WORK</p>
+      <section id="work" className="section section-dark work-preview">
+        <p className="section-kicker">03 · WORK</p>
         <h2 className="section-title">FINANCE × DESIGN × MEDIA.</h2>
-        <p className="section-subtitle">
-          The creative portfolio layer will showcase projects, visual communication and digital work.
-        </p>
+        <p className="section-subtitle">Selected visual projects and deeper case studies will become the next layer of the portfolio.</p>
       </section>
 
-      <section id="contact" className="section" style={{ paddingBottom: "18vh" }}>
-        <p className="hero-kicker">04 · CONTACT</p>
-        <h2 className="section-title">LET'S BUILD SOMETHING MEANINGFUL.</h2>
-        <p className="section-subtitle">
-          sarveshm0718@gmail.com · LinkedIn · Resume
-        </p>
+      <section id="contact" className="section contact-section" style={{ paddingBottom: "18vh" }}>
+        <p className="section-kicker">04 · CONTACT</p>
+        <h2 className="section-title">LET&apos;S BUILD<br />SOMETHING MEANINGFUL.</h2>
+        <div className="contact-links">
+          <a href="mailto:sarveshm0718@gmail.com">sarveshm0718@gmail.com ↗</a>
+          <a href="https://www.linkedin.com/in/sarvesh-m-gca/" target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+        </div>
       </section>
     </main>
   );
