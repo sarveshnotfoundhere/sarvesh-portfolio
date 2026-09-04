@@ -17,7 +17,7 @@ export default function Home() {
           <h2 className="hero-after-title chroma-title">FINANCE<br />WITH A<br /><span>CREATIVE EDGE.</span></h2>
           <p className="hero-after-copy">A finance-focused portfolio built around analysis, communication, strategy and visual thinking.</p>
           <div className="hero-after-actions">
-            <a className="magnetic-button" href="#about" data-cursor="view" data-cursor-label="EXPLORE">ENTER EXPERIENCE ↓</a>
+            <Link className="magnetic-button" href="/work" data-cursor="view" data-cursor-label="WORK">EXPLORE WORK ↗</Link>
             <Link className="magnetic-button magnetic-button-light" href="/contact" data-cursor="view" data-cursor-label="TALK">LET&apos;S TALK ↗</Link>
           </div>
         </div>
@@ -28,7 +28,7 @@ export default function Home() {
       </section>
 
       <section id="about" className="about-section section section-dark">
-        <motion.div className="about-intro" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.9 }}>
+        <motion.div className="about-intro" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.8 }}>
           <p className="section-kicker">01 · PROFILE</p>
           <h2 className="section-title chroma-title">STRUCTURED THINKING.<br />CREATIVE EXECUTION.</h2>
           <p className="section-subtitle">Commerce, finance, reporting, visual communication and digital media — brought together as one evolving practice.</p>
