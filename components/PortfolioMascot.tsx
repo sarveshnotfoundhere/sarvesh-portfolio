@@ -5,11 +5,10 @@ import { Float } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 
-const SPOTIFY_EMBED = "https://open.spotify.com/embed/playlist/6k0xKv8O5qbefk8CFgSthg?utm_source=generator&theme=0";
+const SPOTIFY_EMBED = "https://open.spotify.com/embed/playlist/6k0xKv8O5qbefk8CFgSthg";
 
 function MascotModel() {
   const group = useRef<THREE.Group>(null);
-
   useFrame(({ pointer, clock }) => {
     if (!group.current) return;
     const t = clock.elapsedTime;
@@ -23,47 +22,34 @@ function MascotModel() {
   const deep = new THREE.MeshStandardMaterial({ color: "#6687ae", roughness: 0.4, metalness: 0.12 });
   const dark = new THREE.MeshStandardMaterial({ color: "#07182c", roughness: 0.34, metalness: 0.04 });
 
-  return (
-    <Float speed={1.1} rotationIntensity={0.04} floatIntensity={0.08}>
-      <group ref={group} scale={0.68} position={[0, -0.35, 0]}>
-        <mesh position={[0, 0.32, 0]} material={blue}><sphereGeometry args={[0.72, 32, 20]} /></mesh>
-        <mesh position={[0, -0.68, 0]} material={deep}><sphereGeometry args={[0.5, 28, 18]} /></mesh>
-        <mesh position={[-0.34, 0.95, 0]} rotation={[0, 0, -0.12]} material={blue}><capsuleGeometry args={[0.12, 0.34, 8, 16]} /></mesh>
-        <mesh position={[0.34, 0.95, 0]} rotation={[0, 0, 0.12]} material={blue}><capsuleGeometry args={[0.12, 0.34, 8, 16]} /></mesh>
-        <mesh position={[-0.25, 0.35, 0.64]} material={dark}><sphereGeometry args={[0.085, 16, 16]} /></mesh>
-        <mesh position={[0.25, 0.35, 0.64]} material={dark}><sphereGeometry args={[0.085, 16, 16]} /></mesh>
-        <mesh position={[0, 0.02, 0.66]} material={dark}><capsuleGeometry args={[0.045, 0.18, 6, 12]} /></mesh>
-        <mesh position={[-0.44, -0.42, 0]} rotation={[0, 0, -0.36]} material={deep}><capsuleGeometry args={[0.07, 0.42, 8, 14]} /></mesh>
-        <mesh position={[0.44, -0.42, 0]} rotation={[0, 0, 0.36]} material={deep}><capsuleGeometry args={[0.07, 0.42, 8, 14]} /></mesh>
-      </group>
-    </Float>
-  );
+  return <Float speed={1.1} rotationIntensity={0.04} floatIntensity={0.08}>
+    <group ref={group} scale={0.68} position={[0, -0.35, 0]}>
+      <mesh position={[0, 0.32, 0]} material={blue}><sphereGeometry args={[0.72, 32, 20]} /></mesh>
+      <mesh position={[0, -0.68, 0]} material={deep}><sphereGeometry args={[0.5, 28, 18]} /></mesh>
+      <mesh position={[-0.34, 0.95, 0]} rotation={[0, 0, -0.12]} material={blue}><capsuleGeometry args={[0.12, 0.34, 8, 16]} /></mesh>
+      <mesh position={[0.34, 0.95, 0]} rotation={[0, 0, 0.12]} material={blue}><capsuleGeometry args={[0.12, 0.34, 8, 16]} /></mesh>
+      <mesh position={[-0.25, 0.35, 0.64]} material={dark}><sphereGeometry args={[0.085, 16, 16]} /></mesh>
+      <mesh position={[0.25, 0.35, 0.64]} material={dark}><sphereGeometry args={[0.085, 16, 16]} /></mesh>
+      <mesh position={[0, 0.02, 0.66]} material={dark}><capsuleGeometry args={[0.045, 0.18, 6, 12]} /></mesh>
+      <mesh position={[-0.44, -0.42, 0]} rotation={[0, 0, -0.36]} material={deep}><capsuleGeometry args={[0.07, 0.42, 8, 14]} /></mesh>
+      <mesh position={[0.44, -0.42, 0]} rotation={[0, 0, 0.36]} material={deep}><capsuleGeometry args={[0.07, 0.42, 8, 14]} /></mesh>
+    </group>
+  </Float>;
 }
 
 export default function PortfolioMascot() {
-  return (
-    <div className="mascot-layer">
-      <div className="mascot-canvas">
-        <Canvas camera={{ position: [0, 0, 4.3], fov: 30 }} dpr={[1, 1.5]} gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}>
-          <ambientLight intensity={1.4} />
-          <directionalLight position={[2, 4, 5]} intensity={2.2} color="#ffffff" />
-          <directionalLight position={[-3, 1, 2]} intensity={1.1} color="#8cc7ff" />
-          <MascotModel />
-        </Canvas>
-      </div>
-      <details className="mascot-spotify">
-        <summary data-cursor="view" data-cursor-label="PLAY">
-          <span className="mascot-spotify-dot" />
-          <span><b>SPOTIFY</b><small>PLAY INSIDE SITE ↗</small></span>
-        </summary>
-        <iframe
-          className="spotify-frame"
-          src={SPOTIFY_EMBED}
-          title="Sarvesh's Spotify playlist"
-          loading="lazy"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        />
-      </details>
+  return <div className="mascot-layer">
+    <div className="mascot-canvas">
+      <Canvas camera={{ position: [0, 0, 4.3], fov: 30 }} dpr={[1, 1.5]} gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}>
+        <ambientLight intensity={1.4} />
+        <directionalLight position={[2, 4, 5]} intensity={2.2} color="#ffffff" />
+        <directionalLight position={[-3, 1, 2]} intensity={1.1} color="#8cc7ff" />
+        <MascotModel />
+      </Canvas>
     </div>
-  );
+    <details className="mascot-spotify">
+      <summary data-cursor="view" data-cursor-label="PLAY"><span className="mascot-spotify-dot" /><span><b>SPOTIFY</b><small>OPEN PLAYER · PLAY HERE</small></span></summary>
+      <iframe className="spotify-frame" src={SPOTIFY_EMBED} title="Sarvesh's Spotify playlist" loading="eager" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowFullScreen />
+    </details>
+  </div>;
 }
