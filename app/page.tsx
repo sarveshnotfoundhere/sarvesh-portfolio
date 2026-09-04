@@ -2,7 +2,6 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
-import ScrollExperienceLayer from "@/components/ScrollExperienceLayer";
 
 const roles = ["FINANCE", "STRATEGY", "CREATIVITY"];
 
@@ -15,7 +14,6 @@ export default function Home() {
 
   return (
     <main className="site-shell">
-      <ScrollExperienceLayer />
       <div className="noise" aria-hidden="true" />
       <div className="grid-overlay" aria-hidden="true" />
       <div className="aurora" aria-hidden="true">
@@ -39,31 +37,66 @@ export default function Home() {
 
       <section id="top" className="hero" aria-label="Introduction">
         <div className="hero-inner">
-          <motion.p className="hero-kicker" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          <motion.p
+            className="hero-kicker"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             ASPIRING FINANCE PROFESSIONAL · CHRIST UNIVERSITY
           </motion.p>
 
-          <motion.div style={{ y: titleY }} className="hero-copy-stack">
-            <motion.h1 className="hero-title" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}>
+          <motion.div style={{ y: titleY }}>
+            <motion.h1
+              className="hero-title"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            >
               <span>SARVESH</span>
               <span className="ghost">M.</span>
             </motion.h1>
-            <motion.p className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.38 }}>
-              Building at the intersection of finance, business thinking and creative execution — with a bias toward learning, making and turning ideas into useful experiences.
+
+            <motion.p
+              className="hero-copy"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.38, ease: "easeOut" }}
+            >
+              Building at the intersection of finance, business thinking and
+              creative execution — with a bias toward learning, making and
+              turning ideas into useful experiences.
             </motion.p>
-            <motion.div className="hero-meta" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}>
-              {roles.map((role) => <span key={role} className="pill">{role}</span>)}
+
+            <motion.div
+              className="hero-meta"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              {roles.map((role) => (
+                <span key={role} className="pill">{role}</span>
+              ))}
             </motion.div>
           </motion.div>
 
-          <motion.div className="hero-orbit" style={{ y: orbitY, rotate: orbitRotate }} aria-hidden="true">
-            <div className="orbit-dot dot-a" /><div className="orbit-dot dot-b" /><div className="orbit-dot dot-c" />
+          <motion.div
+            className="hero-orbit"
+            style={{ y: orbitY, rotate: orbitRotate }}
+            aria-hidden="true"
+          >
+            <div className="orbit-dot dot-a" />
+            <div className="orbit-dot dot-b" />
+            <div className="orbit-dot dot-c" />
             <span className="orbit-label label-a">ANALYSIS</span>
             <span className="orbit-label label-b">IDEAS</span>
             <span className="orbit-label label-c">EXECUTION</span>
           </motion.div>
 
-          <div className="hero-scroll"><span className="scroll-line" /><span>SCROLL TO EXPLORE</span></div>
+          <div className="hero-scroll">
+            <span className="scroll-line" />
+            <span>SCROLL TO EXPLORE</span>
+          </div>
         </div>
       </section>
 
@@ -71,18 +104,39 @@ export default function Home() {
         <motion.div className="about-intro" style={{ y: introY }}>
           <p className="section-kicker">01 · PROFILE</p>
           <h2 className="section-title">STRUCTURED THINKING.<br />CREATIVE EXECUTION.</h2>
-          <p className="section-subtitle">I am a commerce and finance student building practical experience across reporting, student organisations, visual communication and digital media. I like structured problems, clear communication and work that becomes useful outside the screen.</p>
+          <p className="section-subtitle">
+            I am a commerce and finance student building practical experience across
+            reporting, student organisations, visual communication and digital media.
+            I like structured problems, clear communication and work that becomes useful
+            outside the screen.
+          </p>
         </motion.div>
+
         <div className="about-grid">
-          <div className="about-card"><span>01</span><strong>FINANCE</strong><p>Commerce and finance education with a growing interest in analysis, accounting and business thinking.</p></div>
-          <div className="about-card"><span>02</span><strong>COMMUNICATION</strong><p>Reporting, presentation and audience-facing work developed through student organisations and digital roles.</p></div>
-          <div className="about-card"><span>03</span><strong>CREATIVE</strong><p>Graphic design, digital media and content work that turns ideas into visual experiences.</p></div>
+          <div className="about-card">
+            <span>01</span>
+            <strong>FINANCE</strong>
+            <p>Commerce and finance education with a growing interest in analysis, accounting and business thinking.</p>
+          </div>
+          <div className="about-card">
+            <span>02</span>
+            <strong>COMMUNICATION</strong>
+            <p>Reporting, presentation and audience-facing work developed through student organisations and digital roles.</p>
+          </div>
+          <div className="about-card">
+            <span>03</span>
+            <strong>CREATIVE</strong>
+            <p>Graphic design, digital media and content work that turns ideas into visual experiences.</p>
+          </div>
         </div>
       </section>
 
       <section id="experience" className="section experience-section">
         <div className="section-heading-row">
-          <div><p className="section-kicker">02 · EXPERIENCE</p><h2 className="section-title">WHERE I&apos;VE BEEN<br />PUTTING IT TO WORK.</h2></div>
+          <div>
+            <p className="section-kicker">02 · EXPERIENCE</p>
+            <h2 className="section-title">WHERE I&apos;VE BEEN<br />PUTTING IT TO WORK.</h2>
+          </div>
           <p className="section-side-note">2024 → NOW<br />BENGALURU · INDIA</p>
         </div>
         <ExperienceTimeline />
