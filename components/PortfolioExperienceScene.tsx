@@ -11,34 +11,37 @@ function Core() {
   useFrame((state, delta) => {
     if (!group.current) return;
     const t = state.clock.elapsedTime;
-    group.current.rotation.y += delta * 0.12;
-    group.current.rotation.x = Math.sin(t * 0.35) * 0.12;
-    group.current.position.y = Math.sin(t * 0.65) * 0.06;
+    group.current.rotation.y += delta * 0.18;
+    group.current.rotation.x = Math.sin(t * 0.4) * 0.14;
+    group.current.rotation.z = Math.cos(t * 0.28) * 0.08;
+    group.current.position.y = Math.sin(t * 0.7) * 0.08;
   });
 
   return (
     <group ref={group}>
-      <mesh scale={1.18}>
-        <icosahedronGeometry args={[1.05, 5]} />
+      <mesh scale={1.16}>
+        <icosahedronGeometry args={[1.04, 4]} />
         <MeshDistortMaterial
-          color="#0b2a66"
-          roughness={0.18}
-          metalness={0.82}
-          distort={0.16}
-          speed={1.1}
+          color="#092a68"
+          roughness={0.16}
+          metalness={0.9}
+          distort={0.2}
+          speed={1.2}
           transparent
-          opacity={0.9}
+          opacity={0.96}
         />
       </mesh>
-
-      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.52}>
-        <torusGeometry args={[0.96, 0.008, 16, 160]} />
-        <meshBasicMaterial color="#4da3ff" transparent opacity={0.72} />
+      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.5}>
+        <torusGeometry args={[0.98, 0.01, 16, 128]} />
+        <meshBasicMaterial color="#66b4ff" transparent opacity={0.8} />
       </mesh>
-
-      <mesh rotation={[0.52, 0.22, 0.9]} scale={1.9}>
-        <torusGeometry args={[0.98, 0.005, 12, 160]} />
-        <meshBasicMaterial color="#164b9b" transparent opacity={0.42} />
+      <mesh rotation={[0.55, 0.28, 0.86]} scale={1.84}>
+        <torusGeometry args={[1.0, 0.006, 12, 128]} />
+        <meshBasicMaterial color="#1e61bb" transparent opacity={0.5} />
+      </mesh>
+      <mesh rotation={[1.2, 0.4, 0.2]} scale={2.05}>
+        <torusGeometry args={[1, 0.004, 10, 128]} />
+        <meshBasicMaterial color="#0f346e" transparent opacity={0.28} />
       </mesh>
     </group>
   );
@@ -46,26 +49,28 @@ function Core() {
 
 function DataOrbit() {
   const ref = useRef<THREE.Group>(null);
+  const positions = Array.from({ length: 28 }, (_, i) => {
+    const a = (i / 28) * Math.PI * 2;
+    const r = 1.7 + (i % 4) * 0.12;
+    return [Math.cos(a) * r, Math.sin(a * 1.7) * 0.22, Math.sin(a) * r] as [number, number, number];
+  });
 
   useFrame((state, delta) => {
     if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.y -= delta * 0.08;
-    ref.current.rotation.z = Math.sin(t * 0.23) * 0.08;
-  });
-
-  const points = Array.from({ length: 22 }, (_, i) => {
-    const angle = (i / 22) * Math.PI * 2;
-    const radius = 1.7 + (i % 3) * 0.16;
-    return [Math.cos(angle) * radius, Math.sin(angle * 1.7) * 0.28, Math.sin(angle) * radius] as [number, number, number];
+    ref.current.rotation.y -= delta * 0.11;
+    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.22) * 0.05;
   });
 
   return (
     <group ref={ref}>
-      {points.map((position, index) => (
-        <mesh key={index} position={position} scale={index % 4 === 0 ? 0.055 : 0.028}>
-          <sphereGeometry args={[1, 12, 12]} />
-          <meshBasicMaterial color={index % 5 === 0 ? "#7fc5ff" : "#244f90"} transparent opacity={index % 5 === 0 ? 0.92 : 0.56} />
+      {positions.map((position, index) => (
+        <mesh key={index} position={position} scale={index % 5 === 0 ? 0.06 : 0.025}>
+          <sphereGeometry args={[1, 8, 8]} />
+          <meshBasicMaterial
+            color={index % 5 === 0 ? "#9bd0ff" : "#245392"}
+            transparent
+            opacity={index % 5 === 0 ? 0.98 : 0.55}
+          />
         </mesh>
       ))}
     </group>
@@ -75,18 +80,18 @@ function DataOrbit() {
 function Scene() {
   return (
     <>
-      <color attach="background" args={["#02040b"]} />
-      <fog attach="fog" args={["#02040b", 3.8, 8]} />
-      <ambientLight intensity={0.35} />
-      <pointLight position={[3, 3, 4]} intensity={12} color="#2d78d8" distance={8} />
-      <pointLight position={[-3, -2, 1]} intensity={8} color="#15386f" distance={7} />
-      <directionalLight position={[2, 4, 1]} intensity={1.2} color="#d9ebff" />
+      <color attach="background" args={["#010713"]} />
+      <fog attach="fog" args={["#010713", 4.2, 8.5]} />
+      <ambientLight intensity={0.22} />
+      <pointLight position={[3, 2.5, 4]} intensity={14} color="#2f7fe0" distance={8} />
+      <pointLight position={[-3, -1.5, 2]} intensity={7} color="#113b78" distance={7} />
+      <directionalLight position={[2, 4, 1]} intensity={0.9} color="#ddecff" />
 
-      <Float speed={1.1} rotationIntensity={0.28} floatIntensity={0.32}>
+      <Float speed={1.2} rotationIntensity={0.22} floatIntensity={0.3}>
         <Core />
       </Float>
       <DataOrbit />
-      <Sparkles count={90} scale={[6.5, 4.5, 6.5]} size={1.15} speed={0.28} color="#6aaeff" noise={1.1} />
+      <Sparkles count={110} scale={[7, 5, 7]} size={1.1} speed={0.32} color="#78baff" noise={1.15} />
     </>
   );
 }
@@ -95,8 +100,8 @@ export default function PortfolioExperienceScene() {
   return (
     <div className="scene-wrap" aria-hidden="true">
       <Canvas
-        camera={{ position: [0, 0, 5.2], fov: 45 }}
-        dpr={[1, 1.6]}
+        camera={{ position: [0, 0, 5.4], fov: 44 }}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <Scene />
