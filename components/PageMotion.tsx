@@ -42,9 +42,9 @@ export default function PageMotion({ children }: { children: ReactNode }) {
       });
 
       gsap.utils.toArray<HTMLElement>(".section-title, .display-title").forEach((el) => {
-        gsap.fromTo(el, { filter: "blur(10px)", letterSpacing: "0.04em" }, {
-          filter: "blur(0px)", letterSpacing: "-0.08em", ease: "none",
-          scrollTrigger: { trigger: el, start: "top 95%", end: "top 45%", scrub: 0.75 },
+        gsap.fromTo(el, { y: 28, opacity: 0.2 }, {
+          y: 0, opacity: 1, ease: "none",
+          scrollTrigger: { trigger: el, start: "top 95%", end: "top 52%", scrub: 0.7 },
         });
       });
 
@@ -55,8 +55,8 @@ export default function PageMotion({ children }: { children: ReactNode }) {
       });
 
       gsap.to(".display-title", {
-        yPercent: -18,
-        rotateZ: -1.2,
+        yPercent: -12,
+        rotateZ: -0.6,
         ease: "none",
         scrollTrigger: { trigger: ".page-hero, .contact-hero", start: "top top", end: "bottom top", scrub: 1.2 },
       });
@@ -67,6 +67,17 @@ export default function PageMotion({ children }: { children: ReactNode }) {
         ease: "none",
         scrollTrigger: { start: 0, end: "max", scrub: 1.2 },
       });
+
+      const topButton = document.querySelector<HTMLElement>(".goto-top");
+      if (topButton) {
+        gsap.set(topButton, { autoAlpha: 0, y: 70, scale: 0.9 });
+        ScrollTrigger.create({
+          start: "top -25%",
+          end: "max",
+          onEnter: () => gsap.to(topButton, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "power3.out", overwrite: true }),
+          onLeaveBack: () => gsap.to(topButton, { autoAlpha: 0, y: 70, scale: 0.9, duration: 0.35, ease: "power2.in", overwrite: true }),
+        });
+      }
 
       const onMove = (event: PointerEvent) => {
         const x = event.clientX / window.innerWidth - 0.5;
