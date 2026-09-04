@@ -6,6 +6,7 @@ import PageMotion from "@/components/PageMotion";
 export const metadata: Metadata = {
   title: "Sarvesh M — Finance • Strategy • Creativity",
   description: "The personal portfolio of Sarvesh M, combining finance, business thinking and creative execution.",
+  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
