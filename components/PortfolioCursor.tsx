@@ -7,48 +7,55 @@ export default function PortfolioCursor() {
   const label = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    if (!finePointer) return;
-
+    if (!window.matchMedia("(pointer: fine)").matches) return;
     const el = cursor.current;
     if (!el) return;
 
-    const move = (event: MouseEvent) => {
-      el.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+    let tx = 0;
+    let ty = 0;
+
+    const render = () => {
+      x += (tx - x) * 0.2;
+      y += (ty - y) * 0.2;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      raf = requestAnimationFrame(render);
     };
 
-    const enter = () => el.classList.add("is-visible");
+    const move = (event: MouseEvent) => {
+      tx = event.clientX;
+      ty = event.clientY;
+      el.classList.add("is-visible");
+    };
+
     const leave = () => el.classList.remove("is-visible");
 
-    const setState = (type: string | null, text = "") => {
-      el.dataset.state = type ?? "default";
-      if (label.current) label.current.textContent = text;
-    };
-
-    const interactiveSelector = "a, button, [data-cursor]";
     const onOver = (event: MouseEvent) => {
-      const target = (event.target as HTMLElement | null)?.closest<HTMLElement>(interactiveSelector);
-      if (!target) return setState(null);
+      const target = (event.target as HTMLElement | null)?.closest<HTMLElement>("a, button, [data-cursor]");
+      if (!target) {
+        el.dataset.state = "default";
+        if (label.current) label.current.textContent = "";
+        return;
+      }
       const type = target.dataset.cursor ?? "link";
-      setState(type, target.dataset.cursorLabel ?? (type === "view" ? "VIEW" : type === "drag" ? "DRAG" : "OPEN"));
+      el.dataset.state = type;
+      if (label.current) label.current.textContent = target.dataset.cursorLabel ?? (type === "view" ? "VIEW" : "OPEN");
     };
 
     window.addEventListener("mousemove", move, { passive: true });
-    window.addEventListener("mouseenter", enter);
     window.addEventListener("mouseleave", leave);
     window.addEventListener("mouseover", onOver);
+    raf = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener("mousemove", move);
-      window.removeEventListener("mouseenter", enter);
       window.removeEventListener("mouseleave", leave);
       window.removeEventListener("mouseover", onOver);
+      cancelAnimationFrame(raf);
     };
   }, []);
 
-  return (
-    <div ref={cursor} className="portfolio-cursor" aria-hidden="true">
-      <span ref={label} />
-    </div>
-  );
+  return <div ref={cursor} className="portfolio-cursor" aria-hidden="true"><span ref={label} /></div>;
 }
