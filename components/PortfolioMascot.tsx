@@ -51,7 +51,6 @@ export default function PortfolioMascot() {
           <MascotModel />
         </Canvas>
       </div>
-
       <details className="mascot-spotify">
         <summary data-cursor="view" data-cursor-label="PLAY">
           <span className="mascot-spotify-dot" />
