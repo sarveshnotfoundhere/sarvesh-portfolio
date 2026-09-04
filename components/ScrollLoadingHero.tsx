@@ -6,115 +6,112 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stages = ["SIGNAL", "FORM", "MOTION", "IDENTITY", "ACCESS"];
+const NUMBERS = [
+  [7, "3 + 4 = 07"], [13, "2² + 9 = 13"], [21, "3 × 7 = 21"], [34, "13 + 21 = 34"],
+  [42, "6 × 7 = 42"], [55, "100 − 45 = 55"], [64, "8² = 64"], [73, "81 − 8 = 73"],
+  [89, "144 − 55 = 89"], [100, "10 × 10 = 100"],
+] as const;
 
 export default function ScrollLoadingHero() {
   const root = useRef<HTMLElement | null>(null);
+  const entered = useRef(false);
 
   useLayoutEffect(() => {
     const host = root.current;
     if (!host) return;
-
     const ctx = gsap.context(() => {
-      const update = (value: number) => {
-        const p = gsap.utils.clamp(0, 100, value);
+      const setProgress = (progress: number) => {
+        const p = gsap.utils.clamp(0, 100, progress);
         gsap.set(".loader-percent", { textContent: String(Math.round(p)).padStart(2, "0") });
-        gsap.set(".loader-energy", { scaleX: p / 100 });
-        gsap.set(".loader-ring-1", { rotation: p * 1.55 });
-        gsap.set(".loader-ring-2", { rotation: -p * 1.05 });
-        gsap.set(".loader-ring-3", { rotation: p * 2.1 });
-        gsap.set(".loader-core", { rotation: p * 1.1, scale: 0.88 + p / 420 });
-        gsap.set(".loader-mass", { rotation: p * 0.24, y: -p * 0.04, scale: 0.96 + p / 620 });
-        gsap.set(".loader-grid", { xPercent: p * 0.012, yPercent: -p * 0.07 });
-        gsap.set(".loader-noise", { opacity: 0.5 + p / 180 });
-        stages.forEach((_, index) => gsap.set(`.loader-stage-${index}`, {
-          opacity: p >= index * 20 + 5 ? 1 : 0.24,
-          x: p >= index * 20 + 5 ? 0 : 10,
-        }));
+        gsap.set(".loader-bar", { scaleX: p / 100 });
+        gsap.set(".loader-number", { y: `${(1 - p / 100) * 80}px` });
+        NUMBERS.forEach(([number], index) => {
+          const threshold = (index / (NUMBERS.length - 1)) * 82;
+          const active = p >= threshold;
+          gsap.set(`.loader-number-${index}`, { autoAlpha: active ? 1 : 0.08, scale: active ? 1 : 0.88, x: active ? 0 : 24 });
+        });
       };
 
       ScrollTrigger.create({
         trigger: host,
         start: "top top",
-        end: "88% top",
-        scrub: 0.65,
+        end: "82% top",
+        scrub: 0.9,
         invalidateOnRefresh: true,
-        onUpdate: (self) => update(self.progress * 100),
-        onLeave: () => {
-          gsap.to(".loader-percent", { textContent: "100", duration: 0.3 });
-          gsap.to(".loader-ready", { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power3.out" });
-          gsap.to(".loader-hold", { autoAlpha: 1, duration: 0.55, delay: 0.15 });
-          gsap.to(".loader-hold", { autoAlpha: 0, duration: 0.75, delay: 2.45 });
+        onUpdate: (self) => setProgress(self.progress * 100),
+      });
+
+      gsap.to(".loader-number-column", {
+        yPercent: -18,
+        ease: "none",
+        scrollTrigger: { trigger: host, start: "top top", end: "82% top", scrub: 1.15 },
+      });
+
+      gsap.fromTo(".loader-title", { y: 40, opacity: 0.2 }, {
+        y: 0, opacity: 1, ease: "none",
+        scrollTrigger: { trigger: host, start: "top top", end: "18% top", scrub: 0.8 },
+      });
+
+      gsap.to(".loader-title", {
+        scale: 0.82, opacity: 0.18,
+        scrollTrigger: { trigger: host, start: "42% top", end: "78% top", scrub: 1 },
+      });
+
+      gsap.to(".loader-hold", {
+        autoAlpha: 1,
+        scrollTrigger: { trigger: host, start: "82% top", end: "94% top", scrub: 0.5 },
+      });
+
+      ScrollTrigger.create({
+        trigger: host,
+        start: "99% top",
+        end: "max",
+        onEnter: () => {
+          if (entered.current) return;
+          entered.current = true;
+          document.body.classList.add("site-entered");
+          window.dispatchEvent(new Event("portfolio:entered"));
         },
         onEnterBack: () => {
-          gsap.set(".loader-ready", { autoAlpha: 0, scale: 0.92 });
-          gsap.set(".loader-hold", { autoAlpha: 0 });
+          entered.current = false;
+          document.body.classList.remove("site-entered");
+          window.dispatchEvent(new Event("portfolio:loading"));
         },
       });
 
-      const intro = gsap.timeline({
-        scrollTrigger: { trigger: host, start: "top top", end: "32% top", scrub: 0.9 },
-      });
-      intro.to(".loader-intro", { yPercent: -12, opacity: 0.42, scale: 1.02 }, 0)
-        .to(".loader-command", { y: -35, opacity: 0.2 }, 0)
-        .to(".loader-final-title", { scale: 0.86, opacity: 0.22, yPercent: -7 }, 0);
-
-      const finish = gsap.timeline({
-        scrollTrigger: { trigger: host, start: "66% top", end: "88% top", scrub: 0.9 },
-      });
-      finish.to(".loader-final-title", { scale: 1.14, yPercent: -42, opacity: 0 }, 0)
-        .to(".loader-mass", { scale: 1.55, opacity: 0.18 }, 0)
-        .to(".loader-ui", { y: -12, opacity: 0.28 }, 0)
-        .to(".loader-reveal", { scale: 14, opacity: 1, ease: "power2.inOut" }, 0.42);
-
-      update(0);
+      setProgress(0);
       requestAnimationFrame(() => ScrollTrigger.refresh());
     }, host);
-
     return () => ctx.revert();
   }, []);
 
   return (
     <section ref={root} id="top" className="loader-track" aria-label="Scroll to enter portfolio">
       <div className="loader-stage-lock">
-        <div className="loader-grid" aria-hidden="true" />
-        <div className="loader-noise" aria-hidden="true" />
-        <div className="loader-vignette" aria-hidden="true" />
-        <div className="loader-scanbar" aria-hidden="true" />
+        <div className="loader-grain" aria-hidden="true" />
+        <div className="loader-rule loader-rule-top" aria-hidden="true" />
+        <div className="loader-rule loader-rule-bottom" aria-hidden="true" />
 
-        <div className="loader-ui loader-topbar"><span>SM / ENTRY</span><span>SCROLL TO ENTER</span></div>
-        <div className="loader-ui loader-command"><i /> BUILDING EXPERIENCE</div>
+        <div className="loader-topbar"><span>SM</span><span>PORTFOLIO / 001</span></div>
+        <div className="loader-title"><span>SCROLL</span><em>DOWN.</em></div>
+        <p className="loader-subtitle">A little space before the work.</p>
 
-        <div className="loader-intro">
-          <p className="loader-eyebrow">PORTFOLIO · ENTRY</p>
-          <p className="loader-microcopy">Scroll slowly. Let it build.</p>
+        <div className="loader-number-column" aria-hidden="true">
+          {NUMBERS.map(([number, formula], index) => (
+            <div className={`loader-number loader-number-${index}`} key={number}>
+              <span>{String(number).padStart(3, "0")}</span>
+              <small>{formula}</small>
+            </div>
+          ))}
         </div>
 
-        <div className="loader-mass" aria-hidden="true">
-          <div className="loader-ring loader-ring-1"><span /></div>
-          <div className="loader-ring loader-ring-2"><span /></div>
-          <div className="loader-ring loader-ring-3"><span /></div>
-          <div className="loader-ring loader-ring-4" />
-          <div className="loader-core"><b>SM</b><small>BUILD</small></div>
-          <div className="loader-orbit-label label-a">SIGNAL</div>
-          <div className="loader-orbit-label label-b">FORM</div>
-          <div className="loader-orbit-label label-c">MOTION</div>
+        <div className="loader-percent-wrap"><strong className="loader-percent">00</strong><span>%</span></div>
+        <div className="loader-progress-track"><span className="loader-bar" /></div>
+        <div className="loader-footer"><span>BUILDING / SARVESH M.</span><span>KEEP SCROLLING ↓</span></div>
+
+        <div className="loader-hold" aria-hidden="true">
+          <span className="hold-percent">100</span><small>TAKE A BREATH</small>
         </div>
-
-        <div className="loader-final-title"><span>SARVESH</span><em>M.</em></div>
-
-        <div className="loader-ui loader-progress">
-          <div className="loader-energy-track"><span className="loader-energy" /></div>
-          <div className="loader-progress-number"><strong className="loader-percent">00</strong><i>%</i></div>
-          <div className="loader-stage-list">
-            {stages.map((stage, index) => <div className={`loader-stage loader-stage-${index}`} key={stage}><span>0{index + 1}</span><b>{stage}</b></div>)}
-          </div>
-          <span className="loader-scroll-hint">SCROLL TO BUILD ↓</span>
-        </div>
-
-        <div className="loader-ready" aria-hidden="true"><strong>100%</strong><span>READY</span></div>
-        <div className="loader-hold" aria-hidden="true"><span>BREATHE</span><small>PORTFOLIO READY</small></div>
-        <div className="loader-reveal" aria-hidden="true" />
       </div>
     </section>
   );
