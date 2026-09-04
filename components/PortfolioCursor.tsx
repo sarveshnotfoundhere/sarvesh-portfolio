@@ -18,8 +18,8 @@ export default function PortfolioCursor() {
     let ty = y;
 
     const render = () => {
-      x += (tx - x) * 0.22;
-      y += (ty - y) * 0.22;
+      x += (tx - x) * 0.2;
+      y += (ty - y) * 0.2;
       el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
       raf = requestAnimationFrame(render);
     };
@@ -30,7 +30,7 @@ export default function PortfolioCursor() {
       el.classList.add("is-visible");
     };
     const leave = () => el.classList.remove("is-visible");
-    const onOver = (event: Event) => {
+    const onOver = (event: MouseEvent) => {
       const target = (event.target as HTMLElement | null)?.closest<HTMLElement>("a, button, [data-cursor]");
       if (!target) {
         el.dataset.state = "default";
