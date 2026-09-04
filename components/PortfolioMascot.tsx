@@ -5,6 +5,8 @@ import { Float } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 
+const SPOTIFY_PLAYLIST = "https://open.spotify.com/playlist/6k0xKv8O5qbefk8CFgSthg";
+
 function MascotModel() {
   const group = useRef<THREE.Group>(null);
 
@@ -41,7 +43,7 @@ export default function PortfolioMascot() {
           <MascotModel />
         </Canvas>
       </div>
-      <a className="mascot-spotify" href="https://open.spotify.com/" target="_blank" rel="noreferrer" data-cursor="view" data-cursor-label="PLAY">
+      <a className="mascot-spotify" href={SPOTIFY_PLAYLIST} target="_blank" rel="noreferrer" data-cursor="view" data-cursor-label="PLAY" aria-label="Open Sarvesh's Spotify playlist">
         <span className="mascot-spotify-dot" />
         <span><b>SPOTIFY</b><small>MY PLAYLIST ↗</small></span>
       </a>
