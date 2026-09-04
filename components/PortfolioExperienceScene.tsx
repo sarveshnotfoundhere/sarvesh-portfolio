@@ -1,73 +1,56 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
+import { Float, Sparkles } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 
-function Core() {
+function SMObject() {
   const group = useRef<THREE.Group>(null);
-
-  useFrame((state, delta) => {
+  useFrame(({ clock }) => {
     if (!group.current) return;
-    const t = state.clock.elapsedTime;
-    group.current.rotation.y += delta * 0.12;
-    group.current.rotation.x = Math.sin(t * 0.35) * 0.12;
-    group.current.position.y = Math.sin(t * 0.65) * 0.06;
+    const t = clock.elapsedTime;
+    group.current.rotation.y = t * 0.28;
+    group.current.rotation.x = Math.sin(t * 0.6) * 0.14;
+    group.current.rotation.z = Math.cos(t * 0.42) * 0.08;
   });
 
   return (
     <group ref={group}>
-      <mesh scale={1.18}>
-        <icosahedronGeometry args={[1.05, 5]} />
-        <MeshDistortMaterial
-          color="#0b2a66"
-          roughness={0.18}
-          metalness={0.82}
-          distort={0.16}
-          speed={1.1}
-          transparent
-          opacity={0.9}
-        />
+      <mesh>
+        <icosahedronGeometry args={[1.28, 2]} />
+        <meshBasicMaterial color="#111111" wireframe transparent opacity={0.35} />
       </mesh>
-
-      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.52}>
-        <torusGeometry args={[0.96, 0.008, 16, 160]} />
-        <meshBasicMaterial color="#4da3ff" transparent opacity={0.72} />
+      <mesh scale={0.92}>
+        <torusGeometry args={[1.08, 0.018, 16, 140]} />
+        <meshBasicMaterial color="#111111" />
       </mesh>
-
-      <mesh rotation={[0.52, 0.22, 0.9]} scale={1.9}>
-        <torusGeometry args={[0.98, 0.005, 12, 160]} />
-        <meshBasicMaterial color="#164b9b" transparent opacity={0.42} />
+      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.16}>
+        <torusGeometry args={[0.92, 0.012, 12, 120]} />
+        <meshBasicMaterial color="#777777" transparent opacity={0.65} />
       </mesh>
-    </group>
-  );
-}
-
-function DataOrbit() {
-  const ref = useRef<THREE.Group>(null);
-
-  useFrame((state, delta) => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.y -= delta * 0.08;
-    ref.current.rotation.z = Math.sin(t * 0.23) * 0.08;
-  });
-
-  const points = Array.from({ length: 22 }, (_, i) => {
-    const angle = (i / 22) * Math.PI * 2;
-    const radius = 1.7 + (i % 3) * 0.16;
-    return [Math.cos(angle) * radius, Math.sin(angle * 1.7) * 0.28, Math.sin(angle) * radius] as [number, number, number];
-  });
-
-  return (
-    <group ref={ref}>
-      {points.map((position, index) => (
-        <mesh key={index} position={position} scale={index % 4 === 0 ? 0.055 : 0.028}>
-          <sphereGeometry args={[1, 12, 12]} />
-          <meshBasicMaterial color={index % 5 === 0 ? "#7fc5ff" : "#244f90"} transparent opacity={index % 5 === 0 ? 0.92 : 0.56} />
+      <group position={[0, 0, 1.1]} rotation={[0.08, -0.12, 0.03]}>
+        <mesh position={[-0.2, 0.06, 0]} rotation={[0, 0, -0.08]}>
+          <boxGeometry args={[0.12, 1.0, 0.08]} />
+          <meshBasicMaterial color="#050505" />
         </mesh>
-      ))}
+        <mesh position={[-0.02, 0.38, 0]} rotation={[0, 0, 0.04]}>
+          <boxGeometry args={[0.52, 0.11, 0.08]} />
+          <meshBasicMaterial color="#050505" />
+        </mesh>
+        <mesh position={[-0.01, -0.38, 0]} rotation={[0, 0, 0.04]}>
+          <boxGeometry args={[0.52, 0.11, 0.08]} />
+          <meshBasicMaterial color="#050505" />
+        </mesh>
+        <mesh position={[0.22, 0.02, 0]} rotation={[0, 0, 0.78]}>
+          <boxGeometry args={[0.12, 0.9, 0.08]} />
+          <meshBasicMaterial color="#050505" />
+        </mesh>
+        <mesh position={[0.0, 0.02, 0]} rotation={[0, 0, -0.78]}>
+          <boxGeometry args={[0.12, 0.9, 0.08]} />
+          <meshBasicMaterial color="#050505" />
+        </mesh>
+      </group>
     </group>
   );
 }
@@ -75,18 +58,14 @@ function DataOrbit() {
 function Scene() {
   return (
     <>
-      <color attach="background" args={["#02040b"]} />
-      <fog attach="fog" args={["#02040b", 3.8, 8]} />
-      <ambientLight intensity={0.35} />
-      <pointLight position={[3, 3, 4]} intensity={12} color="#2d78d8" distance={8} />
-      <pointLight position={[-3, -2, 1]} intensity={8} color="#15386f" distance={7} />
-      <directionalLight position={[2, 4, 1]} intensity={1.2} color="#d9ebff" />
-
-      <Float speed={1.1} rotationIntensity={0.28} floatIntensity={0.32}>
-        <Core />
+      <color attach="background" args={["#f8f8f5"]} />
+      <ambientLight intensity={1} />
+      <directionalLight position={[2, 4, 3]} intensity={1.4} color="#ffffff" />
+      <directionalLight position={[-3, -1, 2]} intensity={0.45} color="#bdbdbd" />
+      <Float speed={1.1} rotationIntensity={0.08} floatIntensity={0.22}>
+        <SMObject />
       </Float>
-      <DataOrbit />
-      <Sparkles count={90} scale={[6.5, 4.5, 6.5]} size={1.15} speed={0.28} color="#6aaeff" noise={1.1} />
+      <Sparkles count={45} scale={[5, 3.5, 5]} size={0.45} speed={0.14} color="#111111" noise={0.8} />
     </>
   );
 }
@@ -94,11 +73,7 @@ function Scene() {
 export default function PortfolioExperienceScene() {
   return (
     <div className="scene-wrap" aria-hidden="true">
-      <Canvas
-        camera={{ position: [0, 0, 5.2], fov: 45 }}
-        dpr={[1, 1.6]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      >
+      <Canvas camera={{ position: [0, 0, 5.6], fov: 42 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}>
         <Scene />
       </Canvas>
     </div>
