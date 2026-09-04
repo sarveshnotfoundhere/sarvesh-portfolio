@@ -6,6 +6,9 @@ import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import ScrollLoadingHero from "@/components/ScrollLoadingHero";
 import PortfolioExperienceScene from "@/components/PortfolioExperienceScene";
 
+const DESIGN_LINK = "https://www.instagram.com/liqu0rtalk/";
+const LINKEDIN_LINK = "https://www.linkedin.com/in/sarvesh-m-gca/";
+
 export default function Home() {
   return (
     <main className="site-shell home-space">
@@ -45,12 +48,19 @@ export default function Home() {
       <section id="work" className="section section-dark work-preview">
         <p className="section-kicker">03 · WORK</p><h2 className="section-title">FINANCE × DESIGN × MEDIA.</h2>
         <p className="section-subtitle">Selected work across visual communication, digital media and finance-focused thinking.</p>
-        <Link className="section-link" href="/work" data-cursor="view" data-cursor-label="VIEW">VIEW WORK ↗</Link>
+        <div className="home-social-links">
+          <a className="section-link" href={DESIGN_LINK} target="_blank" rel="noreferrer" data-cursor="view" data-cursor-label="VIEW">DESIGN ↗</a>
+          <Link className="section-link" href="/work" data-cursor="view" data-cursor-label="VIEW">VIEW WORK ↗</Link>
+        </div>
       </section>
 
       <section id="contact" className="section contact-section">
         <p className="section-kicker">04 · CONTACT</p><h2 className="section-title">LET&apos;S BUILD<br />SOMETHING MEANINGFUL.</h2>
-        <div className="contact-links"><Link href="/contact" data-cursor="view" data-cursor-label="TALK">START A CONVERSATION ↗</Link><a href="mailto:sarveshm0718@gmail.com" data-cursor="email">EMAIL ↗</a></div>
+        <div className="contact-links">
+          <Link href="/contact" data-cursor="view" data-cursor-label="TALK">START A CONVERSATION ↗</Link>
+          <a href={LINKEDIN_LINK} target="_blank" rel="noreferrer" data-cursor="view" data-cursor-label="LINKEDIN">LINKEDIN ↗</a>
+          <a href="mailto:sarveshm0718@gmail.com" data-cursor="email">EMAIL ↗</a>
+        </div>
       </section>
       <div className="goto-top"><a href="#top" data-cursor="view" data-cursor-label="TOP">GO TO TOP ↑</a></div>
     </main>
