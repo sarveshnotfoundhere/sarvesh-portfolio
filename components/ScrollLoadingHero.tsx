@@ -19,62 +19,66 @@ export default function ScrollLoadingHero() {
 
   useLayoutEffect(() => {
     if (!root.current) return;
-    const ctx = gsap.context(() => {
-      const progress = { value: 0 };
-      const setProgress = (value: number) => {
-        const p = Math.max(0, Math.min(100, value));
-        progress.value = p;
-        gsap.set(".loader-percent", { textContent: String(Math.round(p)).padStart(2, "0") });
-        gsap.set(".loader-fill", { scaleY: p / 100 });
-        gsap.set(".loader-orbit-a", { rotation: p * 3.6 });
-        gsap.set(".loader-orbit-b", { rotation: -p * 5.2 });
-        gsap.set(".loader-orbit-c", { rotation: p * 7.5 });
-        gsap.set(".loader-core", { rotation: p * 2.4, scale: 0.82 + p / 280 });
-        gsap.set(".loader-scan", { rotation: p * 9 });
-        gsap.set(".loader-grid", { yPercent: -p * .24, rotate: p * .04 });
-        gsap.set(".loader-glow", { opacity: .08 + p / 300 });
-        stages.forEach((_, index) => {
-          const active = p >= index * 20 + 8;
-          gsap.set(`.loader-stage-${index}`, { opacity: active ? 1 : .22, x: active ? 0 : 14 });
-        });
-        if (p >= 99.5) gsap.set(".loader-ready", { opacity: 1, scale: 1 });
-        else gsap.set(".loader-ready", { opacity: 0, scale: .92 });
-      };
 
-      setProgress(0);
-      gsap.to(progress, {
-        value: 100,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".loader-track",
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 901px)", () => {
+      const ctx = gsap.context(() => {
+        const progress = { value: 0 };
+        const setProgress = (value: number) => {
+          const p = Math.max(0, Math.min(100, value));
+          progress.value = p;
+          gsap.set(".loader-percent", { textContent: String(Math.round(p)).padStart(2, "0") });
+          gsap.set(".loader-fill", { scaleY: p / 100 });
+          gsap.set(".loader-orbit-a", { rotation: p * 3.6 });
+          gsap.set(".loader-orbit-b", { rotation: -p * 5.2 });
+          gsap.set(".loader-orbit-c", { rotation: p * 7.5 });
+          gsap.set(".loader-core", { rotation: p * 2.4, scale: 0.82 + p / 280 });
+          gsap.set(".loader-scan", { rotation: p * 9 });
+          gsap.set(".loader-grid", { yPercent: -p * 0.24, rotate: p * 0.04 });
+          gsap.set(".loader-glow", { opacity: 0.08 + p / 300 });
+          stages.forEach((_, index) => {
+            const active = p >= index * 20 + 8;
+            gsap.set(`.loader-stage-${index}`, { opacity: active ? 1 : 0.22, x: active ? 0 : 14 });
+          });
+          gsap.set(".loader-ready", { opacity: p >= 99.5 ? 1 : 0, scale: p >= 99.5 ? 1 : 0.92 });
+        };
+
+        const st = ScrollTrigger.create({
+          trigger: root.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: .3,
-          onUpdate: self => setProgress(self.progress * 100),
-        },
-      });
+          scrub: 0.1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => setProgress(self.progress * 100),
+        });
 
-      gsap.to(".loader-title", {
-        yPercent: -24,
-        scale: .66,
-        opacity: .08,
-        ease: "none",
-        scrollTrigger: { trigger: ".loader-track", start: "top top", end: "70% top", scrub: .6 },
-      });
-      gsap.to(".loader-command", {
-        y: -140,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: { trigger: ".loader-track", start: "8% top", end: "40% top", scrub: .6 },
-      });
-      gsap.to(".loader-stage-stack", {
-        y: -90,
-        ease: "none",
-        scrollTrigger: { trigger: ".loader-track", start: "15% top", end: "bottom top", scrub: .8 },
-      });
-      ScrollTrigger.refresh();
-    }, root);
-    return () => ctx.revert();
+        gsap.to(".loader-title", {
+          yPercent: -24,
+          scale: 0.66,
+          opacity: 0.08,
+          ease: "none",
+          scrollTrigger: { trigger: root.current, start: "top top", end: "45% top", scrub: 0.2 },
+        });
+        gsap.to(".loader-command", {
+          y: -140,
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: { trigger: root.current, start: "5% top", end: "30% top", scrub: 0.2 },
+        });
+        gsap.to(".loader-stage-stack", {
+          y: -90,
+          ease: "none",
+          scrollTrigger: { trigger: root.current, start: "10% top", end: "bottom top", scrub: 0.25 },
+        });
+        setProgress(0);
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+
+        return () => st.kill();
+      }, root);
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
