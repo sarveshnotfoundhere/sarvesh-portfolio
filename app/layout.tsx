@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
+import PageMotion from "@/components/PageMotion";
 
 export const metadata: Metadata = {
   title: "Sarvesh M — Finance • Strategy • Creativity",
@@ -8,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en">
-      <body><SiteChrome />{children}</body>
-    </html>
-  );
+  return <html lang="en"><body><SiteChrome /><PageMotion>{children}</PageMotion></body></html>;
 }
