@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@gsap/react": "latest",
+    "@react-three/drei": "latest",
     "@react-three/fiber": "latest",
     "framer-motion": "latest",
+    "gsap": "latest",
     "lenis": "latest",
     "lucide-react": "latest",
     "next": "latest",
