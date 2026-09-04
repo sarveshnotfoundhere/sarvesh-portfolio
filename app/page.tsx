@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import ScrollExperienceLayer from "@/components/ScrollExperienceLayer";
+import PortfolioCursor from "@/components/PortfolioCursor";
+import PortfolioMascot from "@/components/PortfolioMascot";
 
 const roles = ["FINANCE", "STRATEGY", "CREATIVITY"];
 
@@ -16,6 +18,8 @@ export default function Home() {
   return (
     <main className="site-shell">
       <ScrollExperienceLayer />
+      <PortfolioMascot />
+      <PortfolioCursor />
       <div className="noise" aria-hidden="true" />
       <div className="grid-overlay" aria-hidden="true" />
       <div className="aurora" aria-hidden="true">
@@ -26,14 +30,14 @@ export default function Home() {
 
       <header className="nav-wrap">
         <nav className="nav" aria-label="Primary navigation">
-          <a className="brand" href="#top" aria-label="Sarvesh home">SM</a>
+          <a className="brand" href="#top" aria-label="Sarvesh home" data-cursor="link">SM</a>
           <div className="nav-links">
-            <a href="#about">ABOUT</a>
-            <a href="#experience">EXPERIENCE</a>
-            <a href="#work">WORK</a>
-            <a href="#contact">CONTACT</a>
+            <a href="#about" data-cursor="link">ABOUT</a>
+            <a href="#experience" data-cursor="link">EXPERIENCE</a>
+            <a href="#work" data-cursor="link">WORK</a>
+            <a href="#contact" data-cursor="link">CONTACT</a>
           </div>
-          <a className="nav-cta" href="mailto:sarveshm0718@gmail.com">LET&apos;S TALK ↗</a>
+          <a className="nav-cta" href="mailto:sarveshm0718@gmail.com" data-cursor="link">LET&apos;S TALK ↗</a>
         </nav>
       </header>
 
@@ -50,9 +54,7 @@ export default function Home() {
             </motion.h1>
 
             <motion.p className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.38, ease: "easeOut" }}>
-              Building at the intersection of finance, business thinking and
-              creative execution — with a bias toward learning, making and
-              turning ideas into useful experiences.
+              Building at the intersection of finance, business thinking and creative execution — with a bias toward learning, making and turning ideas into useful experiences.
             </motion.p>
 
             <motion.div className="hero-meta" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}>
@@ -61,18 +63,11 @@ export default function Home() {
           </motion.div>
 
           <motion.div className="hero-orbit" style={{ y: orbitY, rotate: orbitRotate }} aria-hidden="true">
-            <div className="orbit-dot dot-a" />
-            <div className="orbit-dot dot-b" />
-            <div className="orbit-dot dot-c" />
-            <span className="orbit-label label-a">ANALYSIS</span>
-            <span className="orbit-label label-b">IDEAS</span>
-            <span className="orbit-label label-c">EXECUTION</span>
+            <div className="orbit-dot dot-a" /><div className="orbit-dot dot-b" /><div className="orbit-dot dot-c" />
+            <span className="orbit-label label-a">ANALYSIS</span><span className="orbit-label label-b">IDEAS</span><span className="orbit-label label-c">EXECUTION</span>
           </motion.div>
 
-          <div className="hero-scroll">
-            <span className="scroll-line" />
-            <span>SCROLL TO EXPLORE</span>
-          </div>
+          <div className="hero-scroll"><span className="scroll-line" /><span>SCROLL TO EXPLORE</span></div>
         </div>
       </section>
 
@@ -83,9 +78,9 @@ export default function Home() {
           <p className="section-subtitle">I am a commerce and finance student building practical experience across reporting, student organisations, visual communication and digital media. I like structured problems, clear communication and work that becomes useful outside the screen.</p>
         </motion.div>
         <div className="about-grid">
-          <div className="about-card"><span>01</span><strong>FINANCE</strong><p>Commerce and finance education with a growing interest in analysis, accounting and business thinking.</p></div>
-          <div className="about-card"><span>02</span><strong>COMMUNICATION</strong><p>Reporting, presentation and audience-facing work developed through student organisations and digital roles.</p></div>
-          <div className="about-card"><span>03</span><strong>CREATIVE</strong><p>Graphic design, digital media and content work that turns ideas into visual experiences.</p></div>
+          <div className="about-card" data-cursor="view" data-cursor-label="EXPLORE"><span>01</span><strong>FINANCE</strong><p>Commerce and finance education with a growing interest in analysis, accounting and business thinking.</p></div>
+          <div className="about-card" data-cursor="view" data-cursor-label="EXPLORE"><span>02</span><strong>COMMUNICATION</strong><p>Reporting, presentation and audience-facing work developed through student organisations and digital roles.</p></div>
+          <div className="about-card" data-cursor="view" data-cursor-label="EXPLORE"><span>03</span><strong>CREATIVE</strong><p>Graphic design, digital media and content work that turns ideas into visual experiences.</p></div>
         </div>
       </section>
 
@@ -107,8 +102,8 @@ export default function Home() {
         <p className="section-kicker">04 · CONTACT</p>
         <h2 className="section-title">LET&apos;S BUILD<br />SOMETHING MEANINGFUL.</h2>
         <div className="contact-links">
-          <a href="mailto:sarveshm0718@gmail.com">sarveshm0718@gmail.com ↗</a>
-          <a href="https://www.linkedin.com/in/sarvesh-m-gca/" target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+          <a href="mailto:sarveshm0718@gmail.com" data-cursor="link">sarveshm0718@gmail.com ↗</a>
+          <a href="https://www.linkedin.com/in/sarvesh-m-gca/" target="_blank" rel="noreferrer" data-cursor="link">LINKEDIN ↗</a>
         </div>
       </section>
     </main>
