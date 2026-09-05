@@ -6,17 +6,16 @@ import { usePathname } from "next/navigation";
 import PortfolioCursor from "@/components/PortfolioCursor";
 import PortfolioMascot from "@/components/PortfolioMascot";
 
-const EMBER_SEEDS = Array.from({ length: 14 }, (_, index) => ({
+const EMBER_SEEDS = Array.from({ length: 18 }, (_, index) => ({
   id: index,
-  left: 5 + ((index * 17) % 88),
-  top: 10 + ((index * 29) % 78),
-  size: 18 + ((index * 9) % 18),
-  radius: 38 + ((index * 17) % 38),
-  duration: 9 + (index % 8),
-  delay: -(index * 0.8),
-  driftX: ((index % 5) - 2) * 38,
-  driftY: ((index % 7) - 3) * 42,
-  tilt: (index * 19) % 70 - 35,
+  left: 4 + ((index * 17) % 92),
+  top: 7 + ((index * 29) % 86),
+  size: 9 + ((index * 5) % 9),
+  duration: 12 + (index % 7) * 1.6,
+  delay: -(index * 0.9),
+  driftX: ((index % 7) - 3) * 54,
+  driftY: ((index % 9) - 4) * 46,
+  tilt: (index * 23) % 150 - 75,
 }));
 
 function EmberField() {
@@ -31,125 +30,126 @@ function EmberField() {
   return (
     <div className="ember-field" aria-label="Interactive color controls">
       <style jsx global>{`
-        .ember-field { isolation:isolate; }
-        .ember-wrap {
-          transform-origin:center;
-          filter:drop-shadow(0 0 12px rgba(255,120,20,.26));
+        .ember-field{isolation:isolate}
+        .ember-wrap{
+          transform-origin:50% 50%;
+          animation:emberFloat 15s ease-in-out infinite alternate;
+          animation-delay:var(--ember-delay);
+          will-change:transform;
+          z-index:1;
         }
-        .ember {
+        .ember{
           position:relative!important;
           display:block!important;
-          border:1px solid rgba(255,242,215,.76)!important;
-          border-top-color:rgba(255,255,255,.95)!important;
-          border-left-color:rgba(255,255,255,.62)!important;
+          border:1px solid rgba(230,248,255,.86)!important;
+          clip-path:polygon(5% 53%,18% 12%,63% 2%,97% 32%,78% 94%,28% 84%);
           background:
-            linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.08) 24%,transparent 25%),
-            linear-gradient(115deg,rgba(255,255,255,.2),transparent 42%),
-            linear-gradient(135deg,#fff5d0 0%,#ffbd73 22%,#ff7a18 58%,#c93400 100%)!important;
+            linear-gradient(132deg,rgba(255,255,255,.92) 0 9%,rgba(255,255,255,.22) 18%,rgba(142,216,255,.16) 36%,rgba(255,142,56,.5) 62%,rgba(255,74,12,.9) 100%),
+            linear-gradient(35deg,rgba(83,178,255,.28),transparent 55%),
+            linear-gradient(125deg,rgba(255,255,255,.34),transparent 45%)!important;
           box-shadow:
-            inset 2px 2px 0 rgba(255,255,255,.72),
-            inset -2px -2px 0 rgba(94,20,0,.16),
-            inset 0 0 14px rgba(255,255,255,.22),
-            0 0 8px rgba(255,190,110,.75),
-            0 0 24px rgba(255,100,10,.42),
-            0 0 56px rgba(255,55,0,.17)!important;
-          backdrop-filter:blur(7px) saturate(1.35)!important;
-          -webkit-backdrop-filter:blur(7px) saturate(1.35)!important;
-          overflow:visible!important;
+            inset 1px 1px 0 rgba(255,255,255,.95),
+            inset -1px -2px 0 rgba(20,45,72,.3),
+            inset 0 0 7px rgba(255,255,255,.4),
+            0 2px 6px rgba(4,18,34,.48),
+            0 0 9px rgba(118,214,255,.5),
+            0 0 22px rgba(255,117,31,.32)!important;
+          backdrop-filter:blur(8px) saturate(1.4)!important;
+          -webkit-backdrop-filter:blur(8px) saturate(1.4)!important;
+          opacity:.82;
           cursor:pointer;
-          animation:emberShardPulse var(--ember-speed,6s) ease-in-out infinite;
-          transition:transform .35s cubic-bezier(.16,1,.3,1),filter .35s ease,box-shadow .35s ease!important;
+          transition:transform .28s cubic-bezier(.16,1,.3,1),filter .28s ease,box-shadow .28s ease,opacity .28s ease!important;
         }
-        .ember:before {
+        .ember:before{
           content:"";
           position:absolute;
-          width:48%;
-          height:24%;
-          left:12%;
-          top:11%;
-          border-radius:999px;
-          background:linear-gradient(90deg,rgba(255,255,255,.92),rgba(255,255,255,0));
-          filter:blur(1px);
-          transform:rotate(-18deg);
+          left:12%;top:10%;
+          width:64%;height:18%;
+          background:linear-gradient(90deg,rgba(255,255,255,.98),rgba(255,255,255,.12));
+          transform:rotate(-19deg);
+          filter:blur(.6px);
           opacity:.8;
           pointer-events:none;
         }
-        .ember:after {
+        .ember:after{
           content:"";
           position:absolute;
-          inset:-12px;
-          border-radius:inherit;
-          background:radial-gradient(circle,rgba(255,119,25,.32),transparent 66%);
-          filter:blur(7px);
-          opacity:.7;
+          inset:-8px;
+          background:radial-gradient(circle,rgba(129,219,255,.16) 0 25%,rgba(255,117,31,.18) 44%,transparent 72%);
+          filter:blur(6px);
           z-index:-1;
           pointer-events:none;
         }
-        .ember-wrap:hover { z-index:30; }
-        .ember-wrap:hover .ember {
-          transform:rotate(calc(var(--ember-rot,0deg) + 14deg)) scale(1.42)!important;
-          filter:brightness(1.22) saturate(1.32)!important;
+        .ember-wrap:hover{z-index:50}
+        .ember-wrap:hover .ember{
+          transform:rotate(calc(var(--ember-rot) + 10deg)) scale(1.65) translate3d(3px,-2px,0)!important;
+          filter:brightness(1.34) saturate(1.18)!important;
+          opacity:1;
           box-shadow:
-            inset 2px 2px 0 rgba(255,255,255,.9),
-            inset -2px -2px 0 rgba(94,20,0,.14),
-            inset 0 0 20px rgba(255,255,255,.34),
-            0 0 10px rgba(255,245,215,1),
-            0 0 30px rgba(255,130,40,1),
-            0 0 72px rgba(255,72,0,.4)!important;
+            inset 1px 1px 0 rgba(255,255,255,1),
+            inset -1px -2px 0 rgba(12,31,54,.24),
+            inset 0 0 10px rgba(255,255,255,.56),
+            0 4px 10px rgba(3,15,29,.6),
+            0 0 12px rgba(172,235,255,.9),
+            0 0 32px rgba(255,117,31,.66)!important;
         }
-        .ember-tooltip {
-          left:24px!important;
-          bottom:24px!important;
-          border-color:rgba(255,132,44,.42)!important;
-          box-shadow:0 10px 38px rgba(255,90,0,.13),0 16px 36px rgba(0,0,0,.12)!important;
+        .ember-tooltip{left:18px!important;bottom:18px!important}
+        .ember-wrap:hover .ember-tooltip{transform:translateY(0) translateX(2px)!important}
+        @keyframes emberFloat{
+          0%{transform:translate3d(0,0,0) rotate(calc(var(--ember-rot) - 9deg))}
+          20%{transform:translate3d(var(--ember-x1),var(--ember-y1),0) rotate(calc(var(--ember-rot) + 4deg))}
+          42%{transform:translate3d(var(--ember-x2),var(--ember-y2),0) rotate(calc(var(--ember-rot) - 5deg))}
+          68%{transform:translate3d(var(--ember-x3),var(--ember-y3),0) rotate(calc(var(--ember-rot) + 7deg))}
+          84%{transform:translate3d(var(--ember-x4),var(--ember-y4),0) rotate(calc(var(--ember-rot) - 3deg))}
+          100%{transform:translate3d(0,0,0) rotate(calc(var(--ember-rot) + 9deg))}
         }
-        .ember-wrap:hover .ember-tooltip { transform:translateY(0) translateX(2px)!important; }
-        body.dark-mode .ember {
-          background:
-            linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.08) 24%,transparent 25%),
-            linear-gradient(115deg,rgba(255,255,255,.22),transparent 42%),
-            linear-gradient(135deg,#fff2ce 0%,#ffc987 24%,#ff8e36 58%,#de4300 100%)!important;
-        }
-        @keyframes emberShardPulse {
-          0%,100% { opacity:.68; filter:brightness(.96) saturate(1.08); }
-          50% { opacity:1; filter:brightness(1.14) saturate(1.22); }
-        }
+        body.dark-mode .ember{filter:brightness(.98) saturate(1.1)}
       `}</style>
-      {EMBER_SEEDS.map((ember) => (
-        <span
-          key={ember.id}
-          className="ember-wrap"
-          style={{
-            left: `${ember.left}%`,
-            top: `${ember.top}%`,
-            animationDuration: `${ember.duration}s`,
-            animationDelay: `${ember.delay}s`,
-            ["--ember-x"]: `${ember.driftX}px`,
-            ["--ember-y"]: `${ember.driftY}px`,
-            ["--ember-rot"]: `${ember.tilt}deg`,
-          } as React.CSSProperties}
-        >
-          <button
-            className="ember"
-            type="button"
-            onClick={() => setDark((value) => !value)}
-            onMouseEnter={() => setHovered(ember.id)}
-            onMouseLeave={() => setHovered(null)}
-            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-            data-cursor="view"
-            data-cursor-label="SWITCH"
+      {EMBER_SEEDS.map((ember) => {
+        const drift = {
+          ["--ember-x1"]: `${ember.driftX * 0.55}px`,
+          ["--ember-y1"]: `${ember.driftY * -0.4}px`,
+          ["--ember-x2"]: `${ember.driftX * -0.75}px`,
+          ["--ember-y2"]: `${ember.driftY * 0.65}px`,
+          ["--ember-x3"]: `${ember.driftX * 0.85}px`,
+          ["--ember-y3"]: `${ember.driftY * -0.7}px`,
+          ["--ember-x4"]: `${ember.driftX * -0.45}px`,
+          ["--ember-y4"]: `${ember.driftY * -0.9}px`,
+        };
+
+        return (
+          <span
+            key={ember.id}
+            className="ember-wrap"
             style={{
-              width: `${ember.size}px`,
-              height: `${Math.round(ember.size * 0.58)}px`,
-              borderRadius: `${ember.radius}% ${100 - ember.radius}% ${38 + (ember.id * 7) % 28}% ${62 - (ember.id * 5) % 30}% / 35% 28% 72% 65%`,
-              ["--ember-speed"]: `${5.4 + (ember.id % 5) * 0.55}s`,
+              left: `${ember.left}%`,
+              top: `${ember.top}%`,
+              animationDuration: `${ember.duration}s`,
+              ["--ember-delay"]: `${ember.delay}s`,
+              ...drift,
             } as React.CSSProperties}
-          />
-          <span className={`ember-tooltip ${hovered === ember.id ? "is-visible" : ""}`} role="status">
-            {dark ? "Click for light mode." : "Click for dark mode."}
+          >
+            <button
+              className="ember"
+              type="button"
+              onClick={() => setDark((value) => !value)}
+              onMouseEnter={() => setHovered(ember.id)}
+              onMouseLeave={() => setHovered(null)}
+              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+              data-cursor="view"
+              data-cursor-label="SWITCH"
+              style={{
+                width: `${ember.size}px`,
+                height: `${Math.max(ember.size * 0.58, 6)}px`,
+                ["--ember-rot"]: `${ember.tilt}deg`,
+              } as React.CSSProperties}
+            />
+            <span className={`ember-tooltip ${hovered === ember.id ? "is-visible" : ""}`} role="status">
+              {dark ? "Click for light mode." : "Click for dark mode."}
+            </span>
           </span>
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }
