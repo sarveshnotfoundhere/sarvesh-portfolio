@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import ScrollLoadingHero from "@/components/ScrollLoadingHero";
 import PortfolioExperienceScene from "@/components/PortfolioExperienceScene";
+import InteractiveHeroGrid from "@/components/InteractiveHeroGrid";
 
 const DESIGN_LINK = "https://www.instagram.com/liqu0rtalk/";
 const LINKEDIN_LINK = "https://www.linkedin.com/in/sarvesh-m-gca/";
@@ -23,7 +24,11 @@ export default function Home() {
             <Link className="magnetic-button magnetic-button-light" href="/contact" data-cursor="view" data-cursor-label="TALK">CONTACT ↗</Link>
           </div>
         </div>
-        <div className="hero-after-visual"><PortfolioExperienceScene /><span className="hero-orbit-label">SM / 360°</span></div>
+        <div className="hero-after-visual">
+          <InteractiveHeroGrid />
+          <PortfolioExperienceScene />
+          <span className="hero-orbit-label">SM / 360°</span>
+        </div>
       </section>
 
       <section id="about" className="about-section section section-dark">
