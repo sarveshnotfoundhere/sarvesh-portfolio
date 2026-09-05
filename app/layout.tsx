@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./hero-grid.css";
 import SiteChrome from "@/components/SiteChrome";
 import PageMotion from "@/components/PageMotion";
 
