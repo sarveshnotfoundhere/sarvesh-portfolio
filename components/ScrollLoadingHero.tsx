@@ -19,6 +19,15 @@ export default function ScrollLoadingHero() {
   useLayoutEffect(() => {
     const host = root.current;
     if (!host) return;
+
+    const alreadyEntered = sessionStorage.getItem("sarvesh-portfolio-entered") === "1";
+    if (alreadyEntered) {
+      document.body.classList.add("site-entered");
+      host.classList.add("loader-already-entered");
+      entered.current = true;
+      return;
+    }
+
     const ctx = gsap.context(() => {
       const setProgress = (progress: number) => {
         const p = gsap.utils.clamp(0, 100, progress);
@@ -28,7 +37,11 @@ export default function ScrollLoadingHero() {
         NUMBERS.forEach(([number], index) => {
           const threshold = (index / (NUMBERS.length - 1)) * 82;
           const active = p >= threshold;
-          gsap.set(`.loader-number-${index}`, { autoAlpha: active ? 1 : 0.08, scale: active ? 1 : 0.88, x: active ? 0 : 24 });
+          gsap.set(`.loader-number-${index}`, {
+            autoAlpha: active ? 1 : 0.08,
+            scale: active ? 1 : 0.88,
+            x: active ? 0 : 24,
+          });
         });
       };
 
@@ -59,22 +72,31 @@ export default function ScrollLoadingHero() {
 
       gsap.to(".loader-hold", {
         autoAlpha: 1,
-        scrollTrigger: { trigger: host, start: "82% top", end: "94% top", scrub: 0.5 },
+        scrollTrigger: { trigger: host, start: "82% top", end: "88% top", scrub: 0.35 },
+      });
+
+      // A genuine visual pause after 100%: the hold zone occupies the final
+      // 12% of the loading track while the page itself remains locked.
+      gsap.to(".loader-hold", {
+        autoAlpha: 1,
+        scrollTrigger: { trigger: host, start: "88% top", end: "96% top", scrub: false },
       });
 
       ScrollTrigger.create({
         trigger: host,
-        start: "99% top",
+        start: "98% top",
         end: "max",
         onEnter: () => {
           if (entered.current) return;
           entered.current = true;
+          sessionStorage.setItem("sarvesh-portfolio-entered", "1");
           document.body.classList.add("site-entered");
           window.dispatchEvent(new Event("portfolio:entered"));
         },
         onEnterBack: () => {
           entered.current = false;
           document.body.classList.remove("site-entered");
+          sessionStorage.removeItem("sarvesh-portfolio-entered");
           window.dispatchEvent(new Event("portfolio:loading"));
         },
       });
@@ -91,7 +113,6 @@ export default function ScrollLoadingHero() {
         <div className="loader-grain" aria-hidden="true" />
         <div className="loader-rule loader-rule-top" aria-hidden="true" />
         <div className="loader-rule loader-rule-bottom" aria-hidden="true" />
-
         <div className="loader-topbar"><span>SM</span><span>PORTFOLIO / 001</span></div>
         <div className="loader-title"><span>SCROLL</span><em>DOWN.</em></div>
         <p className="loader-subtitle">A little space before the work.</p>
@@ -110,7 +131,8 @@ export default function ScrollLoadingHero() {
         <div className="loader-footer"><span>BUILDING / SARVESH M.</span><span>KEEP SCROLLING ↓</span></div>
 
         <div className="loader-hold" aria-hidden="true">
-          <span className="hold-percent">100</span><small>TAKE A BREATH</small>
+          <span className="hold-percent">100</span>
+          <small>LOADED · TAKE A BREATH</small>
         </div>
       </div>
     </section>
